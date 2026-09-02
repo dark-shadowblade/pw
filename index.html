@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Hub</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            min-height: 100vh;
+            color: white;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(0, 150, 255, 0.18), transparent 30%),
+                radial-gradient(circle at 90% 80%, rgba(160, 70, 255, 0.18), transparent 30%),
+                #080b14;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(0, 174, 255, 0.08);
+            filter: blur(100px);
+            border-radius: 50%;
+            top: -150px;
+            left: -150px;
+            z-index: -1;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            background: rgba(150, 50, 255, 0.08);
+            filter: blur(100px);
+            border-radius: 50%;
+            bottom: -150px;
+            right: -150px;
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 55px 20px 35px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 18px;
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 50px;
+            background: rgba(255,255,255,0.06);
+            backdrop-filter: blur(10px);
+            font-size: 13px;
+            letter-spacing: 2px;
+            color: #9edfff;
+            margin-bottom: 18px;
+        }
+
+        h1 {
+            font-size: clamp(38px, 7vw, 72px);
+            font-weight: 800;
+            letter-spacing: -3px;
+            background: linear-gradient(90deg, #ffffff, #76d8ff, #c68cff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            color: #9ca7bd;
+            font-size: 16px;
+        }
+
+        /* Main */
+        .container {
+            width: min(1150px, 92%);
+            margin: auto;
+            padding-bottom: 60px;
+        }
+
+        /* Platform section */
+        .platform-section {
+            margin-top: 35px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-title h2 {
+            font-size: 24px;
+        }
+
+        .line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                rgba(255,255,255,0.15),
+                transparent
+            );
+        }
+
+        /* Platform cards */
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .platform {
+            position: relative;
+            padding: 30px;
+            border-radius: 24px;
+            background: rgba(255,255,255,0.055);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(18px);
+            overflow: hidden;
+            transition: 0.35s ease;
+        }
+
+        .platform:hover {
+            transform: translateY(-6px);
+            border-color: rgba(255,255,255,0.25);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+
+        .platform::before {
+            content: "";
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            top: -100px;
+            right: -80px;
+            filter: blur(50px);
+        }
+
+        .thor::before {
+            background: #00aaff;
+        }
+
+        .stark::before {
+            background: #a855f7;
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .logo {
+            width: 58px;
+            height: 58px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 16px;
+            font-size: 25px;
+            font-weight: 900;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .thor .logo {
+            color: #55cfff;
+            box-shadow: 0 0 25px rgba(0,180,255,0.18);
+        }
+
+        .stark .logo {
+            color: #c084fc;
+            box-shadow: 0 0 25px rgba(170,70,255,0.18);
+        }
+
+        .platform-name {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .platform-description {
+            color: #8f9ab0;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* Subject cards */
+        .subjects {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .subject {
+            position: relative;
+            display: block;
+            text-decoration: none;
+            color: white;
+            padding: 22px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.045);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: 0.3s ease;
+            overflow: hidden;
+        }
+
+        .subject:hover {
+            transform: translateY(-4px);
+            background: rgba(255,255,255,0.09);
+            border-color: rgba(120,210,255,0.4);
+        }
+
+        .subject-icon {
+            font-size: 25px;
+            margin-bottom: 15px;
+        }
+
+        .subject h3 {
+            font-size: 17px;
+            margin-bottom: 7px;
+        }
+
+        .subject p {
+            font-size: 12px;
+            color: #8994a9;
+            line-height: 1.5;
+        }
+
+        .arrow {
+            position: absolute;
+            right: 18px;
+            bottom: 17px;
+            font-size: 20px;
+            color: #758198;
+            transition: 0.3s;
+        }
+
+        .subject:hover .arrow {
+            transform: translateX(5px);
+            color: #7ddcff;
+        }
+
+        /* Batch */
+        .batch-card {
+            margin-top: 24px;
+            padding: 28px;
+            border-radius: 24px;
+            background: linear-gradient(
+                135deg,
+                rgba(0,170,255,0.08),
+                rgba(160,70,255,0.08)
+            );
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+        }
+
+        .batch-card h2 {
+            margin-bottom: 8px;
+        }
+
+        .batch-card p {
+            color: #8994a9;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .batch-buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .batch-button {
+            text-decoration: none;
+            color: white;
+            padding: 13px 22px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            transition: 0.3s;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .batch-button:hover {
+            transform: translateY(-3px);
+            background: rgba(255,255,255,0.13);
+            border-color: rgba(120,210,255,0.45);
+        }
+
+        /* Notice */
+        .notice {
+            margin-top: 24px;
+            padding: 22px 25px;
+            border-left: 3px solid #69d4ff;
+            border-radius: 14px;
+            background: rgba(100,210,255,0.05);
+        }
+
+        .notice strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .notice span {
+            color: #8c98ad;
+            font-size: 13px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #687286;
+            font-size: 12px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* Responsive */
+        @media (max-width: 750px) {
+
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .subjects {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding-top: 40px;
+            }
+
+            .platform {
+                padding: 22px;
+            }
+
+            h1 {
+                letter-spacing: -2px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="badge"></div>
+
+    <h1>STUDY HUB</h1>
+
+    <p class="subtitle"></p>
+
+</header>
+
+
+<main class="container">
+
+    <!-- SUBJECTS -->
+
+    <div class="section-title">
+
+        <h2>📚 Subjects</h2>
+
+        <div class="line"></div>
+
+    </div>
+
+
+    <div class="platform-grid">
+
+
+        <!-- THOR -->
+
+        <section class="platform thor">
+
+            <div class="platform-header">
+
+                <div class="logo">⚡</div>
+
+                <div>
+
+                    <div class="platform-name">
+                        THOR
+                    </div>
+
+                    <div class="platform-description">
+                        Primary Study Platform
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="subjects">
+
+
+                <!-- THOR ANCIENT HISTORY -->
+
+                <a
+                    class="subject"
+                    href="https://pwthor.live/study/batches/6a0eaf70f4ae45d1901b7196/subjects/ancient-history-214503/subject-topics/all"
+                    target="_self"
+                    onclick="window.location.href=this.href; return false;"
+                >
+
+                    <div class="subject-icon">
+                        🏛️
+                    </div>
+
+                    <h3>
+                        Ancient History
+                    </h3>
+
+                    <p>
+                        Ancient History lectures and study material.
+                    </p>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- THOR SCIENCE -->
+
+                <a
+                    class="subject"
+                    href="https://pwthor.live/study/batches/6a0eaf70f4ae45d1901b7196/subjects/science-and-technology-144859/subject-topics/all"
+                    target="_self"
+                    onclick="window.location.href=this.href; return false;"
+                >
+
+                    <div class="subject-icon">
+                        🔬
+                    </div>
+
+                    <h3>
+                        Science & Technology
+                    </h3>
+
+                    <p>
+                        Science and Technology lectures and resources.
+                    </p>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- THOR NOTICES -->
+
+                <a
+                    class="subject"
+                    href="https://pwthor.live/study/batches/6a0eaf70f4ae45d1901b7196/subjects/notices-760460"
+                    target="_self"
+                    onclick="window.location.href=this.href; return false;"
+                >
+
+                    <div class="subject-icon">
+                        📢
+                    </div>
+
+                    <h3>
+                        Notices
+                    </h3>
+
+                    <p>
+                        Latest notices and important announcements.
+                    </p>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- STARK -->
+
+        <section class="platform stark">
+
+            <div class="platform-header">
+
+                <div class="logo">
+                    ◈
+                </div>
+
+                <div>
+
+                    <div class="platform-name">
+                        STARK
+                    </div>
+
+                    <div class="platform-description">
+                        Secondary Study Platform
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="subjects">
+
+
+                <!-- STARK ANCIENT HISTORY -->
+
+                <a
+                    class="subject"
+                    href="https://vidcloud.eu.org/#content/batch/6a0eaf70f4ae45d1901b7196/subject/6a0ec7c4ddecf474642eb917/topic/6a5ca16647ffdcbb9eeea40e/subjectname/Ancient%20History/topicname/Ancient%20History"
+                    target="_self"
+                    onclick="window.location.href=this.href; return false;"
+                >
+
+                    <div class="subject-icon">
+                        🏛️
+                    </div>
+
+                    <h3>
+                        Ancient History
+                    </h3>
+
+                    <p>
+                        Ancient History lectures and study material.
+                    </p>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- STARK SCIENCE -->
+
+                <a
+                    class="subject"
+                    href="https://vidcloud.eu.org/#content/batch/6a0eaf70f4ae45d1901b7196/subject/6a0ec9dfb94d5de034cf6987/topic/6a69d0a86010b1cde15b7db5/subjectname/Science%20and%20Technology/topicname/Science%20and%20Technology"
+                    target="_self"
+                    onclick="window.location.href=this.href; return false;"
+                >
+
+                    <div class="subject-icon">
+                        🔬
+                    </div>
+
+                    <h3>
+                        Science & Technology
+                    </h3>
+
+                    <p>
+                        Science and Technology lectures and resources.
+                    </p>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+                <!-- STARK NOTICES -->
+
+                <a
+                    class="subject"
+                    href="https://vidcloud.eu.org/#lessons/batch/6a0eaf70f4ae45d1901b7196/subject/6a0ec770a01ae84402d5fe14/subjectname/Notices"
+                    target="_self"
+                    onclick="window.location.href=this.href; return false;"
+                >
+
+                    <div class="subject-icon">
+                        📢
+                    </div>
+
+                    <h3>
+                        Notices
+                    </h3>
+
+                    <p>
+                        Latest notices and important announcements.
+                    </p>
+
+                    <span class="arrow">
+                        →
+                    </span>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <!-- BATCH ACCESS -->
+
+    <section class="batch-card">
+
+        <h2>
+            🚀 Batch Access
+        </h2>
+
+        <p>
+            Open the complete batch dashboard directly on your preferred platform.
+        </p>
+
+
+        <div class="batch-buttons">
+
+
+            <!-- THOR BATCH -->
+
+            <a
+                class="batch-button"
+                href="https://pwthor.live/study/batches/6a0eaf70f4ae45d1901b7196"
+                target="_self"
+                onclick="window.location.href=this.href; return false;"
+            >
+                ⚡ Open THOR Batch
+            </a>
+
+
+            <!-- STARK BATCH -->
+
+            <a
+                class="batch-button"
+                href="https://vidcloud.eu.org/#BatchDetails/batch/6a0eaf70f4ae45d1901b7196"
+                target="_self"
+                onclick="window.location.href=this.href; return false;"
+            >
+                ◈ Open STARK Batch
+            </a>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- QUICK NOTICE -->
+
+    <div class="notice">
+
+        <strong>
+            💡 Quick Access
+        </strong>
+
+        <span>
+            Choose a subject above to jump directly to its lectures and resources.
+        </span>
+
+    </div>
+
+</main>
+
+
+
+<footer>
+    STUDY HUB • THOR × STARK
+</footer>
+
+
+</body>
+</html>
